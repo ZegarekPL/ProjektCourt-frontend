@@ -1,4 +1,4 @@
-# Web-projekt
+# ProjektCourt
 ## Opis
 Aplikacja do zarządzania kortami. 
 
