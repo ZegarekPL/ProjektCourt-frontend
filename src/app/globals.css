@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Segoe UI", sans-serif;
+}
+
+:root {
+  --color-webkit-scrollbar: 200 200 200;
+  --color-mainWhite: 236 237 234;
+  --color-darkGray: 23 40 61;
+  --color-mainGreen: 57 153 79;
+  --color-mainYellow: 238 226 30;
+  --navbar: 80px;
+}
