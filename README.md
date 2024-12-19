@@ -80,3 +80,53 @@ Ocena:
 - Docker
 
 ## Details of project progress are in [project releases](https://github.com/ZegarekPL/ProjektCourt-frontend/releases)
+
+## How to run:
+
+### Frontend in native:
+
+Install packages
+
+```bash
+npm ci
+```
+
+Run project
+
+```bash
+npm run dev
+```
+
+### Frontend in docker:
+
+To run app in docker:
+
+```bash
+docker-compose up -d --build
+```
+
+To close it:
+
+```bash
+docker-compose down
+```
+
+### To Clear Unused Docker Resources
+
+To clean up unused Docker resources and free up disk space:
+
+```bash
+docker system prune -a
+```
+
+To clean up unused Docker Images and free up disk space:
+
+```bash
+docker image prune -a
+```
+
+To clean up unused Docker Volumes and free up disk space:
+
+```bash
+docker volume prune -a
+```
