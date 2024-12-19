@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="928e197d-bb00-4615-b8b8-5c4030bf704f" name="Changes" comment="feat: #1 create project + docker + create home, login, add-account page">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="928e197d-bb00-4615-b8b8-5c4030bf704f" name="Changes" comment="feat: #2 Update Documentation">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,7 +87,7 @@
       <updated>1734552543374</updated>
       <workItem from="1734552544752" duration="15733000" />
       <workItem from="1734569835306" duration="13000" />
-      <workItem from="1734594659515" duration="1833000" />
+      <workItem from="1734594659515" duration="2099000" />
     </task>
     <task id="LOCAL-00001" summary="feat: #1 create project + docker + create home, login, add-account page">
       <option name="closed" value="true" />
@@ -99,7 +97,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734568710599</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: #2 Update Documentation">
+      <option name="closed" value="true" />
+      <created>1734597142371</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1734597142371</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -107,6 +113,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: #1 create project + docker + create home, login, add-account page" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: #1 create project + docker + create home, login, add-account page" />
+    <MESSAGE value="feat: #2 Update Documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: #2 Update Documentation" />
   </component>
 </project>

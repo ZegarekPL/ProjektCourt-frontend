@@ -79,4 +79,4 @@ Ocena:
 - PostgresSQL
 - Docker
 
-## Details of project progress are in [project releases](https://github.com/ZegarekPL/ProjektCourt-backend/releases)
+## Details of project progress are in [project releases](https://github.com/ZegarekPL/ProjektCourt-frontend/releases)
