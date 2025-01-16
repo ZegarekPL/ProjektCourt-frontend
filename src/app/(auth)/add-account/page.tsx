@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Message from "@/components/auth/LoingMessage";
 import PageWrapper from "@/components/layout/PageWrapper";
+import {registerNewUser} from "@/hooks/user/user";
 
 export default function AddAccount() {
     const [message, setMessage] = useState("");
@@ -33,20 +34,13 @@ export default function AddAccount() {
             return;
         } else {
             const name = formData.get("name");
-            const surname = formData.get("surname");
-            const birthDate = formData.get("birthDate");
-            const phoneNumber = formData.get("phoneNumber");
             const email = formData.get("email");
             const newUser = {
                 name,
-                surname,
-                birthDate,
-                password,
-                phoneNumber,
                 email,
+                password,
             };
-            console.log(newUser);
-            const result = 200;
+            const result = await registerNewUser(newUser);
             if (result === 200) {
                 setAddAccount(true);
                 setTimeout(() => {
@@ -71,10 +65,7 @@ export default function AddAccount() {
                         description={"Wprowadź podane dane aby stworzyć konto."}
                     />
                     <InputName/>
-                    <InputSurname/>
-                    <InputPhoneNumber/>
                     <InputEmail/>
-                    <InputBirthDate/>
                     <InputPassword/>
                     <InputSecondPassword/>
                     <LoginButton
