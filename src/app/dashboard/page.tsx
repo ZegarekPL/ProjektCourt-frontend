@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import PageWrapper from "@/components/layout/PageWrapper";
-import { SurfaceType } from "@/hooks/surfaceType/type";
+import { AddSurfaceType, SurfaceType } from "@/hooks/surfaceType/type";
 import { Role, User } from "@/hooks/user/type";
 import { Court, NewCourt } from "@/hooks/court/type";
 import { addCourt, deleteCourtById, editCourtById, getAllCourts } from "@/hooks/court/court";
@@ -13,63 +13,79 @@ export default function CourtPage() {
     const [surfaceTypes, setSurfaceTypes] = useState<SurfaceType[]>([]);
     const [users, setUsers] = useState<User[]>([]);
     const [newCourt, setNewCourt] = useState<NewCourt>({ name: "", localization: "", surfaceType: "" });
+    const [newSurfaceType, setNewSurfaceType] = useState<string>("");
     const [selectedRole, setSelectedRole] = useState<Role | null>(null);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [editingCourt, setEditingCourt] = useState<Court | null>(null);
 
     useEffect(() => {
-        // Fetch all courts, surface types, and users
         fetchCourts();
         fetchSurfaceTypes();
         fetchUsers();
     }, []);
 
     const fetchCourts = async () => {
-        // Fetch the list of courts from the API
         const data = await getAllCourts();
         setCourts(data);
     };
 
     const fetchSurfaceTypes = async () => {
-        // Fetch the surface types from the API
         const data = await getAllSurfaceType();
         setSurfaceTypes(data);
     };
 
     const fetchUsers = async () => {
-        // Fetch the list of users from the API
         const data = await getAllUsers();
         setUsers(data);
     };
 
     const handleAddCourt = async () => {
-        // Add a new court
         const result = await addCourt(newCourt);
         if (result) {
             fetchCourts();
+            window.location.reload();
         }
     };
 
     const handleDeleteCourt = async (courtId: number) => {
-        // Delete a court by ID
         const result = await deleteCourtById(courtId);
         if (result) {
             fetchCourts();
+            window.location.reload();
         }
     };
 
-    const handleEditCourt = async (courtId: number) => {
-        // Edit a court by ID
-        const result = await editCourtById(courtId);
+    const handleEditCourt = (court: Court) => {
+        setEditingCourt(court);
+        setNewCourt({
+            name: court.name,
+            localization: court.localization,
+            surfaceType: court.surfaceType,
+        });
+    };
+
+    const handleUpdateCourt = async (courtId: number) => {
+        const updatedCourt = { ...newCourt, id: courtId };
+        const result = await editCourtById(courtId, updatedCourt);
         if (result) {
             fetchCourts();
+            setEditingCourt(null);
+            window.location.reload();
         }
     };
 
-    const handleAddSurfaceType = async (surfaceType: SurfaceType) => {
-        // Add a new surface type
-        const result = await addSurfaceType(surfaceType);
-        if (result) {
-            fetchSurfaceTypes();
+    const handleAddSurfaceType = async () => {
+        if (newSurfaceType.trim()) {
+            const veryNewSurfaceType: AddSurfaceType = {
+                surfaceType: newSurfaceType,
+            };
+
+            const result = await addSurfaceType(veryNewSurfaceType);
+            if (result) {
+                setNewSurfaceType("");
+                fetchSurfaceTypes();
+                window.location.reload();
+            }
         }
     };
 
@@ -78,6 +94,7 @@ export default function CourtPage() {
             const result = await changeUserRole(selectedUser.id, selectedRole);
             if (result) {
                 fetchUsers();
+                window.location.reload();
             }
         }
     };
@@ -90,7 +107,14 @@ export default function CourtPage() {
                 {/* Court Management */}
                 <div className="mb-8">
                     <h2 className="text-lg font-semibold mb-2">Manage Courts</h2>
-                    <form onSubmit={(e) => { e.preventDefault(); handleAddCourt(); }} className="mb-4">
+                    <form onSubmit={(e) => {
+                        e.preventDefault();
+                        if (editingCourt) {
+                            handleUpdateCourt(editingCourt.id);
+                        } else {
+                            handleAddCourt();
+                        }
+                    }} className="mb-4">
                         <input
                             type="text"
                             value={newCourt.name}
@@ -98,10 +122,17 @@ export default function CourtPage() {
                             placeholder="Court Name"
                             className="p-2 border rounded text-darkGray"
                         />
+                        <input
+                            type="text"
+                            value={newCourt.localization}
+                            onChange={(e) => setNewCourt({ ...newCourt, localization: e.target.value })}
+                            placeholder="Localization Name"
+                            className="p-2 border rounded text-darkGray m-2"
+                        />
                         <select
                             value={newCourt.surfaceType}
                             onChange={(e) => setNewCourt({ ...newCourt, surfaceType: e.target.value })}
-                            className="p-2 border rounded ml-2 text-darkGray"
+                            className="p-2 border rounded m-2 text-darkGray"
                         >
                             {surfaceTypes.map((surface) => (
                                 <option key={surface.id} value={surface.surfaceType}>
@@ -110,57 +141,76 @@ export default function CourtPage() {
                             ))}
                         </select>
                         <button type="submit" className="p-2 bg-blue-500 text-white rounded ml-2">
-                            Add Court
+                            {editingCourt ? "Update Court" : "Add Court"}
                         </button>
                     </form>
 
-                    <ul>
+                    {/* Court Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {courts.map((court) => (
-                            <li key={court.id} className="mb-2">
-                                <div className="bg-darkGray ">
-
-                                {court.name} - {court.surfaceType}
-                                <button
-                                    onClick={() => handleDeleteCourt(court.id)}
-                                    className="ml-2 text-red-500"
-                                >
-                                    Delete
-                                </button>
-                                <button
-                                    onClick={() => handleEditCourt(court.id)}
-                                    className="ml-2 text-blue-500"
-                                >
-                                    Edit
-                                </button>
+                            <div key={court.id}
+                                 className="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col items-center">
+                                <div className="text-lg text-darkGray mb-2">{court.name}</div>
+                                <div className="text-md text-darkGray mb-2">{court.localization}</div>
+                                <div className="text-sm text-darkGray mb-4">Typ: {court.surfaceType}</div>
+                                <div className="flex space-x-2">
+                                    <button
+                                        onClick={() => handleDeleteCourt(court.id)}
+                                        className="text-red-500 hover:text-red-700"
+                                    >
+                                        Delete
+                                    </button>
+                                    <button
+                                        onClick={() => handleEditCourt(court)}
+                                        className="text-blue-500 hover:text-blue-700"
+                                    >
+                                        Edit
+                                    </button>
                                 </div>
-                            </li>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
 
                 {/* Surface Type Management */}
                 <div className="mb-8">
                     <h2 className="text-lg font-semibold mb-2">Manage Surface Types</h2>
-                    <form onSubmit={(e) => { e.preventDefault(); handleAddSurfaceType({ surfaceType: "New Surface" }); }}>
-                        <button type="submit" className="p-2 bg-green-500 text-white rounded">
+                    <div className="flex items-center mb-4">
+                        <input
+                            type="text"
+                            value={newSurfaceType}
+                            onChange={(e) => setNewSurfaceType(e.target.value)}
+                            placeholder="New Surface Type"
+                            className="p-2 border rounded text-darkGray"
+                        />
+                        <button
+                            onClick={handleAddSurfaceType}
+                            className="ml-2 p-2 bg-green-500 text-white rounded"
+                        >
                             Add Surface Type
                         </button>
-                    </form>
-                    <ul>
+                    </div>
+
+                    {/* Surface Type Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {surfaceTypes.map((surface) => (
-                            <li key={surface.id} className="mb-2">
-                                {surface.surfaceType}
-                            </li>
+                            <div key={surface.id} className="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col items-center">
+                                <div className="text-lg text-darkGray mb-2">{surface.surfaceType}</div>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
 
                 {/* User Role Management */}
                 <div className="mb-8">
                     <h2 className="text-lg font-semibold mb-2">Manage User Roles</h2>
                     <select
-                        onChange={(e) => setSelectedUser(users.find((user) => user.id === +e.target.value))}
-                        className="p-2 border rounded"
+                        onChange={(e) => {
+                            const userId = +e.target.value;
+                            const foundUser = users.find((user) => user.id === userId);
+                            setSelectedUser(foundUser || null);
+                        }}
+                        className="p-2 border rounded mb-2 text-darkGray"
                     >
                         <option value="">Select User</option>
                         {users.map((user) => (
@@ -170,16 +220,21 @@ export default function CourtPage() {
                         ))}
                     </select>
                     <select
-                        onChange={(e) => setSelectedRole(e.target.value as Role)}
-                        className="p-2 border rounded ml-2"
+                        onChange={(e) => {
+                            const selectedRole = e.target.value as keyof typeof Role;
+                            setSelectedRole(Role[selectedRole]);
+                        }}
+                        className="p-2 border rounded m-2 text-darkGray"
                     >
                         <option value="">Select Role</option>
-                        <option value={Role.ADMIN}>Admin</option>
-                        <option value={Role.USER}>User</option>
+                        <option value="USER">User</option>
+                        <option value="ADMIN">Admin</option>
                     </select>
+
+
                     <button
                         onClick={handleChangeUserRole}
-                        className="p-2 bg-yellow-500 text-white rounded ml-2"
+                        className="p-2 bg-yellow-500 text-white rounded"
                     >
                         Change Role
                     </button>

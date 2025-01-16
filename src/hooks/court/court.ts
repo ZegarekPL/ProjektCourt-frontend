@@ -83,10 +83,11 @@ export async function deleteCourtById(courtId: number) {
     }
 }
 
-export async function editCourtById(courtId: number) {
+export async function editCourtById(courtId: number, court: NewCourt) {
     try {
-        const response: AxiosResponse<Court> = await appAPI.put(
+        const response: AxiosResponse<NewCourt> = await appAPI.put(
             `/api/court/${courtId}/edit`,
+            court,
             {
                 withCredentials: true,
             }

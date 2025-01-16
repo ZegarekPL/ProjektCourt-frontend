@@ -1,7 +1,6 @@
 import {AxiosResponse} from "axios";
-import {Grade, NewGrade} from "@/hooks/grade/type";
 import {appAPI} from "@/utils/appAPI";
-import {SurfaceType} from "@/hooks/surfaceType/type";
+import {AddSurfaceType, SurfaceType} from "@/hooks/surfaceType/type";
 
 
 export async function getAllSurfaceType() {
@@ -24,9 +23,9 @@ export async function getAllSurfaceType() {
     }
 }
 
-export async function addSurfaceType(surfaceType: SurfaceType) {
+export async function addSurfaceType(surfaceType: AddSurfaceType) {
     try {
-        const response: AxiosResponse<NewGrade> = await appAPI.post(
+        const response: AxiosResponse<AddSurfaceType> = await appAPI.post(
             `/api/surfaceType/addNewSurfaceType`,
             surfaceType,
             {

@@ -9,7 +9,10 @@ export interface NewUser {
     password: string | FormDataEntryValue | null;
 }
 
-export interface User extends NewUser {
+export interface User {
     id: number;
+    name: string;
+    email: string;
+    password: string;
     role: Role;
 }

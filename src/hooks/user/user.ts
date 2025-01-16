@@ -16,14 +16,14 @@ export async function getAllUsers (){
             return response.data;
         } else if (response.status === 401) {
             console.error("Brak autoryzacji użytkownika");
-            return "Brak autoryzacji użytkownika";
+            return []
         } else {
             console.error("Wystąpił błąd podczas pobierania danych użytkownika");
-            return "Wystąpił błąd podczas pobierania danych użytkownika";
+            return []
         }
     } catch (error) {
          console.error("Wystąpił błąd podczas pobierania danych użytkownika", error);
-         return "Wystąpił błąd podczas pobierania danych użytkownika";
+         return []
     }
 }
 
