@@ -16,55 +16,63 @@ Aplikacja do zarządzania kortami.
 
 | **Must-have**                                         | **Typ**   | **Endpoint**                    |
 |-------------------------------------------------------|-----------|---------------------------------|
-| Dodawanie kortów                                      | POST      | /api/court                      |
-| Edycja kortów                                         | PUT       | /api/court/{id}                 |
-| Usuwanie kortów                                       | DELETE    | /api/court/{id}                 |
-| Wyświetlanie kortów, wraz z sortowaniem               | GET       | /api/courts                     |
+| Dodawanie kortów                                      | POST      | /api/court/add                  |
+| Edycja kortów                                         | PUT       | /api/court/{courtId}/edit       |
+| Usuwanie kortów                                       | DELETE    | /api/court/{courtId}/delete     |
+| Wyświetlanie kortów, wraz z sortowaniem               | GET       | /api/court/getAll               |
 | Logowanie (Tylko osoba zalogowana może dodawać korty) |           | OAuth2 lub zwykły login i hasło |
 
 
-| **Other**                           | **Typ**   | **Endpoint**            |
-|-------------------------------------|-----------|-------------------------|
-| Dodawanie komentarzy o kortach      | POST      | /api/court/{id}/comment | 
-| Wyświetlanie komentarzy o kortach   | GET       | /api/court/{id}/comment |
-| Wyświetlanie komentarzy użytkownika | GET       | /api/user/{id}/comment  |
-| Ocena kortów                        | POST      | /api/court/{id}/grades  |
+| **Other**                                 | **Typ**   | **Endpoint**                         |
+|-------------------------------------------|-----------|--------------------------------------|
+| Wyświetlanie kortu, wraz z sortowaniem    | GET       | /api/court/{courtId}                 |
+| Wyświetlanie ocen o kortach               | GET       | /api/grade/getAll                    |
+| Dodawanie ocen do kortów                  | POST      | /api/grade/{userId}/court/{courtId}  |
+| Edycja ocen kortów                        | PUT       | /api/grade/{userId}/court/{courtId}  |
+| Wyświetlanie typów podłoża kortu          | GET       | /api/surfaceType                     |
+| Dodawanie nowych typów podłoża kortu      | POST      | /api/surfaceType/addNewSurfaceType   |
+| Rejestracja użytkowników                  | POST      | /api/user/register                   |
+| Zmiana roli użytkowników                  | PUT       | /api/user/{userId}/role              |
 
 
 ## Typ danych
 
 Role:
 
-| **Id (number)**      | **Role (String)**   |
-|----------------------|---------------------|
-| 1                    | User                |
-| 2                    | Admin               |
-|                      | Osoba niezalogowana |
+Enum:
+- 0 - USER
+- 1 - ADMIN
+
+User:
+
+| **Id (number)**      | **name (string)** | **email (string)** | **password (string)** | **role (number)** | **averageGrade (float)** |
+|----------------------|-------------------|--------------------|-----------------------|-------------------|--------------------------|
+| 1                    | Wiktor            | example@gmail.com  | 123427!Ac             | 1                 | Wiktor                   |
 
 Kort:
 
-| **Id (number)**     | **Nazwa (String)**  | **Lokalizacja (Object)**  | **Typ nawierzchni (number)**  | **Komentarze (number)**            | **Ocena (Object)**                           |
-|---------------------|---------------------|---------------------------|-------------------------------|------------------------------------|----------------------------------------------|
-| 1                   | Kort 1              |  {locX, locY, nazwa }     | idNawierzchni                 | idKomentarzy                       |  {grade1, grade2, grade3, grade4, grade5 }   |
+| **Id (number)**     | **name (string)** | **localization (string)** | **surfaceType (string)** |
+|---------------------|-------------------|---------------------------|--------------------------|
+| 1                   | Kort 1            | Rzeszów                   | Mączka                   |
 
 
 Typ Nawierzchni Kortów:
 
-| **Id (number)**    | **Nazwa (String)**  |
-|--------------------|---------------------|
-| 1                  | Kort 1              |
+| **Id (number)**    | **Nazwa (String)** |
+|--------------------|--------------------|
+| 1                  | Mączka             |
 
 Komentarze:
 
-| **Id (number)**      | **Osoba (id osoby)**  | **Komentarz (id osoby)**  | **Data(Date)**  |
-|----------------------|-----------------------|---------------------------|-----------------|
-| 1                    | 1                     | Przykładowy komantarz     | Data            |
+| **Id (number)**      | **content (string)** | **UserId (number)** | **CourtId (number)** |
+|----------------------|----------------------|---------------------|----------------------|
+| 1                    | Kort jest świetny    | 1                   | 1                    |
 
 Ocena:
 
-| **Id (number)**     | **Ocena (number)**  | **Osoba (id osoby)**  |
-|---------------------|---------------------|-----------------------|
-| 1                   | Od 1 do 5           | 1                     |
+| **Id (number)**     | **UserId (number)** | **grade (number)** | **CourtId (number)**  |
+|---------------------|---------------------|--------------------|-----------------------|
+| 1                   | 1                   | 1 <1,5>            | 1                     |
 
 ## Technologie
 ### Frontend
